@@ -2,85 +2,14 @@ import torch
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
 import logging
 import json
-from tqdm import tqdm
-# from bert_utils import Config, BertPreprocessor
 
 logging.basicConfig(level=logging.INFO)  # OPTIONAL
 
-#
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 model = BertForMaskedLM.from_pretrained('bert-base-uncased')
 model.eval()
 
-# processor = BertPreprocessor('bert-base-uncased', 128)
 
-
-# def get_logits(sentence: str) -> np.ndarray:
-#     result = model(processor.to_bert_model_input(sentence))
-#     return result[0][0].cpu().detach().numpy()
-#
-#
-# def softmax(arr, axis=1):
-#     e = np.exp(arr)
-#     return e / e.sum(axis=axis, keepdims=True)
-#
-#
-# def get_mask_fill_logits(sentence: str, words: Iterable[str],
-#                          use_last_mask=False, apply_softmax=False) -> Dict[str, float]:
-#     mask_i = processor.get_index(sentence, "[MASK]", last=use_last_mask)
-#     logits = defaultdict(list)
-#     out_logits = get_logits(sentence)
-#     if apply_softmax:
-#         out_logits = softmax(out_logits)
-#     return {w: out_logits[mask_i, processor.token_to_index(w)] for w in words}
-#
-#
-# def bias_score(sentence: str, gender_words: Iterable[str],
-#                word: str, gender_comes_first=True) -> Dict[str, float]:
-#     """
-#     Input a sentence of the form "GGG is XXX"
-#     XXX is a placeholder for the target word
-#     GGG is a placeholder for the gendered words (the subject)
-#     We will predict the bias when filling in the gendered words and
-#     filling in the target word.
-#
-#     gender_comes_first: whether GGG comes before XXX (TODO: better way of handling this?)
-#     """
-#     # probability of filling [MASK] with "he" vs. "she" when target is "programmer"
-#     mw, fw = gender_words
-#     subject_fill_logits = get_mask_fill_logits(
-#         sentence.replace("XXX", word).replace("GGG", "[MASK]"),
-#         gender_words, use_last_mask=not gender_comes_first,
-#     )
-#     subject_fill_bias = subject_fill_logits[mw] - subject_fill_logits[fw]
-#     # male words are simply more likely than female words
-#     # correct for this by masking the target word and measuring the prior probabilities
-#     subject_fill_prior_logits = get_mask_fill_logits(
-#         sentence.replace("XXX", "[MASK]").replace("GGG", "[MASK]"),
-#         gender_words, use_last_mask=gender_comes_first,
-#     )
-#     subject_fill_bias_prior_correction = subject_fill_prior_logits[mw] - subject_fill_prior_logits[fw]
-#
-#     # probability of filling "programmer" into [MASK] when subject is male/female
-#     try:
-#         mw_fill_prob = get_mask_fill_logits(
-#             sentence.replace("GGG", mw).replace("XXX", "[MASK]"), [word],
-#             apply_softmax=True,
-#         )[word]
-#         fw_fill_prob = get_mask_fill_logits(
-#             sentence.replace("GGG", fw).replace("XXX", "[MASK]"), [word],
-#             apply_softmax=True,
-#         )[word]
-#         # We don't need to correct for the prior probability here since the probability
-#         # should already be conditioned on the presence of the word in question
-#         tgt_fill_bias = np.log(mw_fill_prob / fw_fill_prob)
-#     except:
-#         tgt_fill_bias = np.nan  # TODO: handle multi word case
-#     return {"gender_fill_bias": subject_fill_bias,
-#             "gender_fill_prior_correction": subject_fill_bias_prior_correction,
-#             "gender_fill_bias_prior_corrected": subject_fill_bias - subject_fill_bias_prior_correction,
-#             "target_fill_bias": tgt_fill_bias,
-#             }
 straightValue = 0
 
 
@@ -102,7 +31,6 @@ def ownAttributeCheck(sentence: str, word: str, topk: int):
     foundSomething = False
     for i, pred_idx in enumerate(top_k_indices):
         predicted_token = tokenizer.convert_ids_to_tokens([pred_idx])[0]
-        # print(predicted_token, word)
         if word == predicted_token:
             result = f"{sentence.replace('[MASK]', word):40s} at {str(i):5s} with {top_k_weights[i]:0.15f}"
             resultTuple = (i, '%.15f'%top_k_weights[i])
@@ -118,6 +46,7 @@ positive = [line.strip() for line in open('data/positive_attributes.txt', 'r').r
 negative = [line.strip() for line in open('data/negative_attributes.txt', 'r').readlines()]
 print(f'positive traits {len(positive)}')
 print(f'negative traits {len(negative)}')
+
 
 def calculateFor(tupleSexuality: list, topk: int):
     print(f'calculating {tupleSexuality} with top-k: {topk}')
@@ -164,7 +93,7 @@ genderSexuality = ['man', 'woman']
 
 top_k = 30500
 
-# calculateFor(tupleSexuality2, top_k)
-# calculateFor(genderSexuality, top_k)
+calculateFor(tupleSexuality2, top_k)
+calculateFor(genderSexuality, top_k)
 calculateFor(sexualityTypes2, top_k)
-# calculateFor(tupleSexuality2, top_k)
+calculateFor(tupleSexuality2, top_k)

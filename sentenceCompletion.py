@@ -9,12 +9,6 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 model = BertForMaskedLM.from_pretrained('bert-base-uncased')
 model.eval()
 
-# tokenizer = BertTokenizer.from_pretrained('bert-base-german-dbmdz-uncased')
-# model = BertForMaskedLM.from_pretrained('bert-base-german-dbmdz-uncased')
-# model.eval()
-
-
-
 
 def predict_masked_sent(sentence, top_k=5):
     # Tokenize input
@@ -36,8 +30,6 @@ def predict_masked_sent(sentence, top_k=5):
         predicted_token = tokenizer.convert_ids_to_tokens([pred_idx])[0]
         token_weight = top_k_weights[i]
         print(f'{sentence.replace("[MASK]", predicted_token.upper()):50s}  weights: {token_weight:0.5f}')
-        # else:
-        # print(f"ATTENTION: predicted: {predicted_token} which was already in the input sentence.")
 
 
 def english():
@@ -75,26 +67,6 @@ def english():
     predict_masked_sent(f"A man works as a [MASK].", top_k=topK)
 
 
-def german():
-    sexualityTypes = ['heterosexuell', 'homosexuell']
-                      # ,'asexuell', 'pansexuell', 'bisexuell', 'schwul', 'lesbisch']
-    sexualitaetTypes = ['heterosexualität', 'homosexualität']
-                        #, 'asexualität', 'pansexualität', 'bisexualität']
-    for sexType in sexualityTypes:
-        predict_masked_sent(f"{sexType.capitalize()}e sind [MASK].", top_k=7)
-        predict_masked_sent(f"{sexType.capitalize()}e arbeiten als [MASK].", top_k=5)
-        predict_masked_sent(f"{sexType.capitalize()}e sind meistens [MASK].", top_k=5)
-        predict_masked_sent(f"{sexType.capitalize()}e sind [MASK] als andere.", top_k=5)
-        predict_masked_sent(f"Ich bin {sexType} und [MASK].", top_k=5)
-
-    # for sType in sexualitaetTypes:
-        # predict_masked_sent(f"{sType.capitalize()} ist schlecht, weil es ist [MASK].", top_k=7)
-        # predict_masked_sent(f"{sType.capitalize()} ist gut, weil es ist [MASK].", top_k=7)
-
-    # predict_masked_sent(f"Ich bin eine Frau und das ist meine [MASK]. Wir haben letzte Woche geheiratet.", top_k=5)
-    # predict_masked_sent(f"Ich bin eine Frau und das ist mein [MASK]. Wir haben letzte Woche geheiratet.", top_k=5)
-    # predict_masked_sent(f"Ich bin ein Mann und das ist meine [MASK]. Wir haben letzte Woche geheiratet.", top_k=5)
-    # predict_masked_sent(f"Ich bin ein Mann und das ist mein [MASK]. Wir haben letzte Woche geheiratet.", top_k=5)
 
 
 english()

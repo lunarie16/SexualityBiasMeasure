@@ -42,13 +42,7 @@ if __name__ == "__main__":
     shortSexualityTypes = ['straight', 'gay', 'lesbian']
     # , 'straight man', 'straight woman', 'gay man', 'gay woman']
     sexualityTypes2 = ['heterosexuality', 'homosexuality', 'asexuality', 'bisexuality', "pansexuality"]
-    # for sexuality in sexualityTypes:
-    #     sentimentAnalysis(f"{sexuality}")
-    # print('\n\n')
-    #
-    # for sexuality in sexualityTypes2:
-    #     sentimentAnalysis(f"{sexuality}")
-    # print('\n\n')
+
 
     for sexuality in shortSexualityTypes:
         sentimentAnalysis(f"We are living in a {sexuality} relationship.")
@@ -58,31 +52,24 @@ if __name__ == "__main__":
         sentimentAnalysis(f"We are living in a {sexuality} marriage.")
     print('\n\n')
 
-    # for sexuality in sexualityTypes:
-    #     sentimentAnalysis(f"This {sexuality} person mad me feel angry.")
-    # print('\n\n')
-    #
-    # for sexuality in sexualityTypes:
-    #     sentimentAnalysis(f"This {sexuality} person mad me feel happy.")
+    for sexuality in sexualityTypes:
+        sentimentAnalysis(f"This {sexuality} person mad me feel angry.")
     print('\n\n')
 
-    # for sexuality in shortSexualityTypes:
-    #     sentimentAnalysis(f"This {sexuality} person mad me feel happy.")
-    # print('\n\n')
-    #
-    # for sexuality in shortSexualityTypes:
-    #     sentimentAnalysis(f"I am {sexuality}.")
-    # print('\n\n')
-    #
-    # for sexuality in shortSexualityTypes:
-    #     sentimentAnalysis(f"My friend is {sexuality}.")
-    # print('\n\n')
+    for sexuality in sexualityTypes:
+        sentimentAnalysis(f"This {sexuality} person mad me feel happy.")
+    print('\n\n')
 
-    # for sexuality in sexualityTypes:
-    #     sentimentAnalysis(f"I like him, he is {sexuality} like me.")
-    # print('\n\n')
-    #
-    # for sexuality in sexualityTypes:
-    #     sentimentAnalysis(f"I like her, she is {sexuality} like me.")
+    for sexuality in shortSexualityTypes:
+        sentimentAnalysis(f"This {sexuality} person mad me feel happy.")
+    print('\n\n')
+
+    for sexuality in shortSexualityTypes:
+        sentimentAnalysis(f"I am {sexuality}.")
+    print('\n\n')
+
+    for sexuality in shortSexualityTypes:
+        sentimentAnalysis(f"My friend is {sexuality}.")
+    print('\n\n')
 
 
